@@ -41,7 +41,7 @@ DELETE http://localhost:5000/api/logout
 ###
 ### Get All Vehicles (Protected)
 GET http://localhost:5000/api/vehicles
-Authorization: Bearer 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiYWRtaW4xIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzQ3OTE3OTY4LCJleHAiOjE3NDc5MTg4Njh9.K32PnMerY3H2zzJ3QqvGMbmPI0j_zxnaraEUYd2NDj8
 
 ###
 
@@ -54,7 +54,7 @@ Authorization: Bearer
 ### Create New Vehicle (Protected)
 POST http://localhost:5000/api/vehicles
 Content-Type: application/json
-Authorization: Bearer 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiYWRtaW4xIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzQ3OTE3OTY4LCJleHAiOjE3NDc5MTg4Njh9.K32PnMerY3H2zzJ3QqvGMbmPI0j_zxnaraEUYd2NDj8
 
 {
   "name": "Toyota Supra",

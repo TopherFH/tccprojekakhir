@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard Admin - Kendaraan</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #eee; }
+    button { padding: 6px 12px; margin-right: 5px; }
+    #vehicleForm { margin-bottom: 20px; }
+    #message { color: red; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h2>Dashboard Admin - Kendaraan</h2>
+  <button id="logoutBtn">Logout</button>
+  <p id="message"></p>
+
+  <h3>Tambah / Edit Kendaraan</h3>
+  <form id="vehicleForm">
+    <input type="hidden" id="vehicleId" />
+    <label>Nama: <input type="text" id="name" required /></label><br /><br />
+    <label>Brand: <input type="text" id="brand" /></label><br /><br />
+    <label>Tahun: <input type="number" id="year" min="1900" max="2100" /></label><br /><br />
+    <label>Kategori: <input type="text" id="category" /></label><br /><br />
+    <label>Deskripsi:<br />
+      <textarea id="description" rows="4" cols="50"></textarea>
+    </label><br /><br />
+    <label>URL Gambar: <input type="text" id="image_url" /></label><br /><br />
+    <button type="submit" id="saveBtn">Simpan</button>
+    <button type="button" id="cancelBtn" class="hidden">Batal</button>
+  </form>
+
+  <h3>Daftar Kendaraan</h3>
+  <table id="vehiclesTable">
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>Brand</th>
+        <th>Tahun</th>
+        <th>Kategori</th>
+        <th>Deskripsi</th>
+        <th>Gambar</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+    <script src="scriptindex.js"></script>
+</body>
+</html>

@@ -11,7 +11,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: "http://127.0.0.1:5500",
     credentials: true,
 }));
 app.use(cookieParser());
