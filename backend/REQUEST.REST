@@ -1,0 +1,38 @@
+### Register Admin
+POST http://localhost:5000/api/users
+Content-Type: application/json
+
+{
+  "username": "admin1",
+  "email": "admin1@example.com",
+  "password": "password123"
+}
+
+###
+
+### Login Admin
+POST http://localhost:5000/api/login
+Content-Type: application/json
+
+{
+  "email": "admin1@example.com",
+  "password": "password123"
+}
+
+###
+
+### Refresh Token
+GET http://localhost:5000/api/token
+Accept: application/json
+# Pastikan cookie refreshToken sudah tersimpan oleh REST Client
+
+###
+
+### Get Users (Protected)
+GET http://localhost:5000/api/users
+Authorization: Bearer 
+
+###
+
+### Logout
+DELETE http://localhost:5000/api/logout
