@@ -25,9 +25,9 @@ export const getVehicleById = async (req, res) => {
 
 // Tambah kendaraan baru
 export const createVehicle = async (req, res) => {
-  const { name, description, image_url, category } = req.body;
+  const { name, year, description, image_url, category } = req.body;
   try {
-    await Vehicle.create({ name, description, image_url, category });
+    await Vehicle.create({ name, year, description, image_url, category });
     res.status(201).json({ msg: "Vehicle berhasil ditambahkan" });
   } catch (error) {
     res.status(400).json({ msg: error.message });
@@ -36,13 +36,13 @@ export const createVehicle = async (req, res) => {
 
 // Update kendaraan berdasarkan ID
 export const updateVehicle = async (req, res) => {
-  const { name, description, image_url, category } = req.body;
+  const { name, year, description, image_url, category } = req.body;
   try {
     const vehicle = await Vehicle.findOne({ where: { id: req.params.id } });
     if (!vehicle) return res.status(404).json({ msg: "Vehicle tidak ditemukan" });
 
     await Vehicle.update(
-      { name, description, image_url, category },
+      { name, year, description, image_url, category },
       { where: { id: req.params.id } }
     );
 

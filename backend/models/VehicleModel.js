@@ -11,6 +11,10 @@ const Vehicle = db.define("vehicles", {
     type: DataTypes.STRING(100),
     allowNull: false,
   },
+  year: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
   description: {
     type: DataTypes.TEXT,
     allowNull: true,
