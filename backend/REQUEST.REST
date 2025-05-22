@@ -29,10 +29,60 @@ Accept: application/json
 ###
 
 ### Get Users (Protected)
-GET http://localhost:5000/api/users
-Authorization: Bearer 
-
+GET http://localhost:5000/api/vehicles
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiYWRtaW4xIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzQ3OTExMjEzLCJleHAiOjE3NDc5MTIxMTN9.z2o3j6UvX9Umqg0d9oM8HhOBt1oGy_ItsRFS69Oh9IE
 ###
 
 ### Logout
 DELETE http://localhost:5000/api/logout
+
+
+
+###
+### Get All Vehicles (Protected)
+GET http://localhost:5000/api/vehicles
+Authorization: Bearer 
+
+###
+
+### Get Vehicle By ID (Protected)
+GET http://localhost:5000/api/vehicles/1
+Authorization: Bearer 
+
+###
+
+### Create New Vehicle (Protected)
+POST http://localhost:5000/api/vehicles
+Content-Type: application/json
+Authorization: Bearer 
+
+{
+  "name": "Toyota Supra",
+  "brand": "Toyota",
+  "year": 2022,
+  "description": "Mobil sport legendaris",
+  "image_url": "https://example.com/supra.jpg",
+  "category": "Mobil Sport"
+}
+
+###
+
+### Update Vehicle (Protected)
+PUT http://localhost:5000/api/vehicles/1
+Content-Type: application/json
+Authorization: Bearer 
+
+{
+  "name": "Toyota Supra GR",
+  "brand": "Toyota",
+  "year": 2023,
+  "description": "Update dengan teknologi GR",
+  "image_url": "https://example.com/supra-gr.jpg",
+  "category": "Mobil Sport"
+}
+
+###
+
+### Delete Vehicle (Protected)
+DELETE http://localhost:5000/api/vehicles/1
+Authorization: Bearer 
