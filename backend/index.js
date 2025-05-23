@@ -3,8 +3,10 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import userRoutes from "./routes/UserRoute.js";
-import db from "./config/database.js";
+import db from "./config/DatabasePam.js";
 import vehicleRoutes from "./routes/VehicleRoute.js";
+import FavoriteRoute from "./routes/FavoriteRoute.js";
+
 
 dotenv.config();
 
@@ -19,6 +21,7 @@ app.use(express.json());
 
 app.use('/api', userRoutes);
 app.use("/api/vehicles", vehicleRoutes);
+app.use(FavoriteRoute);
 app.get("/", (req, res) => {
     res.json({
         message: "Backend Pameran Otomotif berjalan!"

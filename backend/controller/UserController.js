@@ -21,7 +21,8 @@ export const Register = async (req, res) => {
     const {
         username,
         email,
-        password
+        password,
+        role
     } = req.body;
     try {
         const hashPassword = await bcrypt.hash(password, 10);
@@ -29,7 +30,7 @@ export const Register = async (req, res) => {
             username,
             email,
             password: hashPassword,
-            role: 'admin' // sementara hanya admin
+            role: role || 'user' // gunakan role dari request, default ke 'user'
         });
         res.status(201).json({
             msg: "Register berhasil"
@@ -41,7 +42,6 @@ export const Register = async (req, res) => {
     }
 };
 
-// Login dan buat access + refresh token, simpan refresh token di DB dan cookie
 export const Login = async (req, res) => {
     try {
         const user = await User.findOne({
@@ -99,8 +99,11 @@ export const Login = async (req, res) => {
             sameSite: "strict"
         });
 
+        // Kirim accessToken, role, dan userId ke frontend
         res.json({
-            accessToken
+            accessToken,
+            role,
+            userId
         });
     } catch (error) {
         res.status(500).json({

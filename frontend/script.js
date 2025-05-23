@@ -46,7 +46,6 @@ function registerHandler() {
     });
 }
 
-// Handler untuk login
 function loginHandler() {
     const form = document.getElementById("loginForm");
     form.addEventListener("submit", async (e) => {
@@ -62,10 +61,7 @@ function loginHandler() {
                     "Content-Type": "application/json"
                 },
                 credentials: "include", // supaya cookie refresh token diterima
-                body: JSON.stringify({
-                    email,
-                    password
-                }),
+                body: JSON.stringify({ email, password }),
             });
 
             const data = await response.json();
@@ -75,10 +71,19 @@ function loginHandler() {
                 return;
             }
 
+            // Simpan token dan info user
             localStorage.setItem("accessToken", data.accessToken);
+            localStorage.setItem("role", data.role);       // Simpan role dari response
+            localStorage.setItem("userId", data.userId);   // Simpan userId dari response
+
             showMessage("Login berhasil! Mengarahkan...", "green");
+
             setTimeout(() => {
-                window.location.href = "index.html";
+                if (data.role === "admin") {
+                    window.location.href = "indexadmin.html";
+                } else {
+                    window.location.href = "indexuser.html";
+                }
             }, 1000);
         } catch (error) {
             showMessage("Terjadi kesalahan jaringan.");
