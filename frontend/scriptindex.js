@@ -1,5 +1,4 @@
-
-    const apiBaseUrl = "http://localhost:5000/api";
+const apiBaseUrl = "http://localhost:5000/api";
 const accessToken = localStorage.getItem("accessToken");
 const messageEl = document.getElementById("message");
 const vehiclesTableBody = document.querySelector("#vehiclesTable tbody");
@@ -32,31 +31,43 @@ async function fetchVehicles() {
         });
         if (!res.ok) throw new Error("Gagal mengambil data kendaraan");
         const vehicles = await res.json();
-        renderVehicles(vehicles);
+        renderVehiclesTable(vehicles);
     } catch (error) {
         showMessage(error.message);
     }
 }
 
 // Render tabel kendaraan
-function renderVehicles(vehicles) {
-    vehiclesTableBody.innerHTML = "";
-    vehicles.forEach(v => {
-        const tr = document.createElement("tr");
+function renderVehiclesTable(vehicles) {
+    const tbody = document.querySelector("#vehiclesTable tbody");
+    tbody.innerHTML = "";
 
-        tr.innerHTML = `
-          <td>${v.name}</td>
-          <td>${v.brand || ""}</td>
-          <td>${v.year || ""}</td>
-          <td>${v.category || ""}</td>
-          <td>${v.description || ""}</td>
-          <td>${v.image_url ? `<img src="${v.image_url}" alt="${v.name}" width="100">` : ""}</td>
-          <td>
-            <button onclick="editVehicle(${v.id})">Edit</button>
-            <button onclick="deleteVehicle(${v.id})">Hapus</button>
-          </td>
+    if (!vehicles || vehicles.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align:center; color:#888;">Tidak ada data kendaraan</td>
+            </tr>
         `;
-        vehiclesTableBody.appendChild(tr);
+        return;
+    }
+
+    vehicles.forEach(vehicle => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${vehicle.name}</td>
+                <td>${vehicle.brand || '-'}</td>
+                <td>${vehicle.year || '-'}</td>
+                <td>${vehicle.category || '-'}</td>
+                <td>${vehicle.description || '-'}</td>
+                <td>
+                    ${vehicle.image_url ? `<img src="${vehicle.image_url}" alt="gambar" width="80">` : '<span style="color:#888;">Tidak ada gambar</span>'}
+                </td>
+                <td>
+                    <button onclick="editVehicle(${vehicle.id})" class="btn btn-warning btn-sm">Edit</button>
+                    <button onclick="deleteVehicle(${vehicle.id})" class="btn btn-danger btn-sm">Hapus</button>
+                </td>
+            </tr>
+        `;
     });
 }
 
