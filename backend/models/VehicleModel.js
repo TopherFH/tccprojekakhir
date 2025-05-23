@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import db from "../config/database.js";
+import db from "../config/DatabasePam.js";
 
 const Vehicle = db.define("vehicles", {
   id: {

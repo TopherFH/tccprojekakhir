@@ -1,7 +1,7 @@
 import {
     DataTypes
 } from "sequelize";
-import db from "../config/database.js";
+import db from "../config/DatabasePam.js";
 
 const User = db.define('users', {
     id: {
@@ -24,8 +24,8 @@ const User = db.define('users', {
         allowNull: false
     },
     role: {
-        type: DataTypes.ENUM('admin'),
-        defaultValue: 'admin'
+        type: DataTypes.ENUM('admin', 'user'),
+        defaultValue: 'user'
     },
     refresh_token: {
         type: DataTypes.TEXT,
