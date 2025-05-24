@@ -23,34 +23,46 @@ export const getVehicleById = async (req, res) => {
   }
 };
 
-// Tambah kendaraan baru
+
 export const createVehicle = async (req, res) => {
-  const { name, year, description, image_url, category } = req.body;
+  const { name, brand, year, description, image_url, category } = req.body;
   try {
-    await Vehicle.create({ name, year, description, image_url, category });
-    res.status(201).json({ msg: "Vehicle berhasil ditambahkan" });
+    const newVehicle = await Vehicle.create({
+      name,
+      brand,
+      year,
+      description,
+      image_url,
+      category,
+    });
+    res.status(201).json(newVehicle);
   } catch (error) {
-    res.status(400).json({ msg: error.message });
+    res.status(500).json({ msg: error.message });
   }
 };
 
-// Update kendaraan berdasarkan ID
 export const updateVehicle = async (req, res) => {
-  const { name, year, description, image_url, category } = req.body;
+  const id = req.params.id;
+  const { name, brand, year, description, image_url, category } = req.body;
   try {
-    const vehicle = await Vehicle.findOne({ where: { id: req.params.id } });
+    const vehicle = await Vehicle.findByPk(id);
     if (!vehicle) return res.status(404).json({ msg: "Vehicle tidak ditemukan" });
 
-    await Vehicle.update(
-      { name, year, description, image_url, category },
-      { where: { id: req.params.id } }
-    );
+    vehicle.name = name;
+    vehicle.brand = brand;
+    vehicle.year = year;
+    vehicle.description = description;
+    vehicle.image_url = image_url;
+    vehicle.category = category;
 
-    res.json({ msg: "Vehicle berhasil diperbarui" });
+    await vehicle.save();
+
+    res.json(vehicle);
   } catch (error) {
-    res.status(400).json({ msg: error.message });
+    res.status(500).json({ msg: error.message });
   }
 };
+
 
 // Hapus kendaraan berdasarkan ID
 export const deleteVehicle = async (req, res) => {
