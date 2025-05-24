@@ -23,18 +23,13 @@ function showMessage(msg, color = "red") {
 
 // Ambil dan tampilkan daftar kendaraan
 async function fetchVehicles() {
-    try {
-        const res = await fetch(`${apiBaseUrl}/vehicles`, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            }
-        });
-        if (!res.ok) throw new Error("Gagal mengambil data kendaraan");
-        const vehicles = await res.json();
-        renderVehiclesTable(vehicles);
-    } catch (error) {
-        showMessage(error.message);
-    }
+    const accessToken = localStorage.getItem("accessToken");
+    const res = await fetch(`${apiBaseUrl}/vehicles`, {
+        headers: { Authorization: `Bearer ${accessToken}` }
+    });
+    if (handleAuthError(res)) return;
+    const vehicles = await res.json();
+    renderVehiclesTable(vehicles);
 }
 
 // Render tabel kendaraan
@@ -97,30 +92,30 @@ vehicleForm.addEventListener("submit", async (e) => {
         image_url
     };
 
-    try {
-        let res;
-        if (id) {
-            // Update kendaraan
-            res = await fetch(`${apiBaseUrl}/vehicles/${id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${accessToken}`
-                },
-                body: JSON.stringify(payload)
-            });
-        } else {
-            // Tambah kendaraan baru
-            res = await fetch(`${apiBaseUrl}/vehicles`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${accessToken}`
-                },
-                body: JSON.stringify(payload)
-            });
-        }
+    const accessToken = localStorage.getItem("accessToken");
+    let res;
+    if (id) {
+        res = await fetch(`${apiBaseUrl}/vehicles/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`
+            },
+            body: JSON.stringify(payload)
+        });
+    } else {
+        res = await fetch(`${apiBaseUrl}/vehicles`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`
+            },
+            body: JSON.stringify(payload)
+        });
+    }
+    if (handleAuthError(res)) return;
 
+    try {
         if (!res.ok) {
             const errData = await res.json();
             throw new Error(errData.msg || "Gagal menyimpan data kendaraan");
@@ -146,6 +141,7 @@ window.editVehicle = async function (id) {
                 Authorization: `Bearer ${accessToken}`
             }
         });
+        if (handleAuthError(res)) return; 
         if (!res.ok) throw new Error("Gagal mengambil data kendaraan");
         const vehicle = await res.json();
 
@@ -183,7 +179,7 @@ window.deleteVehicle = async function (id) {
                 Authorization: `Bearer ${accessToken}`
             }
         });
-
+        if (handleAuthError(res)) return; 
         if (!res.ok) {
             const errData = await res.json();
             throw new Error(errData.msg || "Gagal menghapus kendaraan");
@@ -216,3 +212,14 @@ logoutBtn.addEventListener("click", async () => {
 
 // Load data kendaraan saat halaman dibuka
 fetchVehicles();
+
+function handleAuthError(response) {
+    if (response.status === 401) {
+        // Bisa juga cek pesan error spesifik jika backend mengirim pesan token expired
+        localStorage.removeItem("accessToken");
+        alert("Sesi login kamu sudah habis. Silakan login ulang.");
+        window.location.href = "login.html";
+        return true;
+    }
+    return false;
+}
