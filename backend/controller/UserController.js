@@ -68,7 +68,7 @@ export const Login = async (req, res) => {
                 role
             },
             process.env.ACCESS_TOKEN_SECRET, {
-                expiresIn: '15m'
+                expiresIn: '1m'
             }
         );
 
@@ -78,7 +78,7 @@ export const Login = async (req, res) => {
                 role
             },
             process.env.REFRESH_TOKEN_SECRET, {
-                expiresIn: '1d'
+                expiresIn: '30m'
             }
         );
 
