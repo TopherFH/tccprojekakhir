@@ -7,6 +7,10 @@ const Vehicle = db.define("vehicles", {
     primaryKey: true,
     autoIncrement: true,
   },
+  brand: {
+    type: DataTypes.STRING,  
+    allowNull: true,
+  },
   name: {
     type: DataTypes.STRING(100),
     allowNull: false,
