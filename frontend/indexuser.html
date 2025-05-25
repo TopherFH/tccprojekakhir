@@ -1,72 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Daftar Kendaraan - ThomasCar</title>\
+    <link rel="stylesheet" href="styleuser.css">
+</head>
+
 <body>
+
+    <header class="main-header">
+        <div class="logo-section" onclick="refreshPage()">
+            <img src="https://img.freepik.com/premium-photo/car-vector-2d-logo-minimal-icon_941097-128691.jpg"
+                alt="Logo" class="logo">
+            <div class="slogan">
+                <strong>THOMASCAR</strong><br />
+                <small>Sakti Topher</small>
+            </div>
+        </div>
+        <nav class="nav-menu">
+            <button id="favBtn" class="tech-button">Favorite</button>
+            <button id="logoutBtn" class="tech-button">Logout</button>
+        </nav>
+    </header>
+
     <h1>Daftar Kendaraan</h1>
 
-    <!-- Tombol Navigasi -->
-    <button id="btnFavorit">Halaman Favorit</button>
-    <button id="btnLogout">Logout</button>
-
-    <div id="vehicle-list"></div>
+    <div id="vehicle-list">
+        <!-- Kartu kendaraan akan muncul di sini -->
+    </div>
 
     <script>
-        // Event tombol Favorit
-        document.getElementById("btnFavorit").addEventListener("click", () => {
-            window.location.href = "favorit.html";
-        });
+        function refreshPage() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-        // Event tombol Logout
-        document.getElementById("btnLogout").addEventListener("click", () => {
+        document.getElementById("logoutBtn").addEventListener("click", () => {
             localStorage.removeItem("accessToken");
             localStorage.removeItem("role");
             localStorage.removeItem("userId");
-            window.location.href = "login.html"; // ganti sesuai nama halaman login Anda
+            window.location.href = "login.html";
         });
 
+        document.getElementById("favBtn").addEventListener("click", () => {
+            window.location.href = "favorit.html";
+        });
+
+        const apiBaseUrl = "http://localhost:5000/api";
+        const accessToken = localStorage.getItem("accessToken");
+        const userRole = localStorage.getItem("role") || "guest";
+
+        if (!accessToken) {
+            alert("Kamu belum login!");
+            window.location.href = "login.html";
+        }
+
         async function fetchVehicles() {
-            const token = localStorage.getItem("accessToken");
-            const userId = localStorage.getItem("userId");
-            const role = localStorage.getItem("role");
-
             try {
-                const res = await fetch("http://localhost:5000/api/vehicles", {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-                const vehicles = await res.json();
-
-                const container = document.getElementById("vehicle-list");
-                container.innerHTML = "";
-
-                vehicles.forEach((vehicle) => {
-                    const div = document.createElement("div");
-                    div.innerHTML = `
-                        <h3>${vehicle.name}</h3>
-                        <p>${vehicle.description}</p>
-                        ${role === "user" ? `<button data-id="${vehicle.id}">Tambah ke Favorit</button>` : ""}
-                    `;
-                    container.appendChild(div);
-
-                    if (role === "user") {
-                        div.querySelector("button").addEventListener("click", () => addToFavorite(vehicle.id, userId));
+                const res = await fetch(`${apiBaseUrl}/vehicles`, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
                     }
                 });
-            } catch {
-                alert("Gagal memuat kendaraan");
+                if (res.status === 401) {
+                    alert("Sesi login kamu sudah habis. Silakan login ulang.");
+                    localStorage.removeItem("accessToken");
+                    window.location.href = "login.html";
+                    return;
+                }
+                if (!res.ok) throw new Error("Gagal memuat kendaraan");
+                const vehicles = await res.json();
+                renderVehicleCards(vehicles);
+            } catch (err) {
+                alert(err.message);
             }
         }
 
-        async function addToFavorite(vehicleId, userId) {
-            const token = localStorage.getItem("accessToken");
+        function renderVehicleCards(vehicles) {
+            const container = document.getElementById("vehicle-list");
+            container.innerHTML = "";
+            if (!vehicles || vehicles.length === 0) {
+                container.innerHTML = "<p style='color:#888; text-align:center;'>Tidak ada kendaraan tersedia</p>";
+                return;
+            }
+            vehicles.forEach(v => {
+                const card = document.createElement("div");
+                card.className = "vehicle-card";
+
+                card.innerHTML = `
+        <img class="vehicle-image" src="${v.image_url || 'https://via.placeholder.com/220x130?text=No+Image'}" alt="${v.name}" />
+        <div class="vehicle-brand">${v.brand || "-"}</div>
+        <div class="vehicle-name">${v.name}</div>
+        <div class="btn-group">
+          ${userRole === "user" ? `<button class="btn btn-favorite" data-id="${v.id}">Favorite</button>` : ""}
+          <button class="btn btn-detail" data-id="${v.id}">Detail</button>
+        </div>
+      `;
+
+                container.appendChild(card);
+
+                if (userRole === "user") {
+                    card.querySelector(".btn-favorite").addEventListener("click", () => addToFavorite(v.id));
+                }
+                card.querySelector(".btn-detail").addEventListener("click", () => showDetail(v.id));
+            });
+        }
+
+        async function addToFavorite(vehicleId) {
+            const userId = localStorage.getItem("userId");
             try {
                 const res = await fetch("http://localhost:5000/favorites", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${accessToken}`
                     },
-                    body: JSON.stringify({ userId, vehicleId }),
+                    body: JSON.stringify({ userId, vehicleId })
                 });
-
                 const data = await res.json();
-
                 if (res.ok) {
                     alert("Berhasil ditambahkan ke favorit");
                 } else {
@@ -77,6 +129,13 @@
             }
         }
 
+        function showDetail(vehicleId) {
+            alert(`Tampilkan detail kendaraan dengan id ${vehicleId}`);
+        }
+
         fetchVehicles();
     </script>
+
 </body>
+
+</html>

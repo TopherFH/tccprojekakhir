@@ -1,0 +1,213 @@
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 20px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 0;
+    margin-bottom: 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 100;
+    height: 60px;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.logo-section:hover {
+    transform: scale(1.02);
+}
+
+.logo {
+    height: 45px;
+    width: auto;
+    transition: opacity 0.2s ease;
+}
+
+.logo:hover {
+    opacity: 0.8;
+}
+
+.slogan {
+    user-select: none;
+}
+
+.slogan strong {
+    font-size: 1rem;
+    color: #111;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.slogan small {
+    font-size: 0.7rem;
+    color: #666;
+    letter-spacing: 0.3px;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    padding-right: 60px;
+    gap: 15px;
+}
+
+.tech-button {
+    background: linear-gradient(135deg, #dc143c, #b91c3c);
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    margin-right: 8px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(220, 20, 60, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.nav-menu .tech-button:last-child {
+    margin-right: 0;
+}
+
+.tech-button:hover {
+    background: linear-gradient(135deg, #b91c3c, #dc143c);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(220, 20, 60, 0.4);
+}
+
+.tech-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(220, 20, 60, 0.3);
+}
+
+/* Body & layout */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding-top: 80px;
+    background: #f9f9f9;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #dc143c;
+    font-weight: 700;
+}
+
+/* Container kartu kendaraan */
+#vehicle-list {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 kolom */
+    gap: 20px;
+    justify-items: center;
+    padding: 0 20px 40px;
+}
+
+/* Card style */
+.vehicle-card {
+    width: 260px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    transition: box-shadow 0.3s ease;
+}
+
+.vehicle-card:hover {
+    box-shadow: 0 6px 15px rgba(220, 20, 60, 0.3);
+}
+
+.vehicle-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    /* Membuat gambar memenuhi card dan proporsional */
+    border-radius: 8px;
+    margin-bottom: 12px;
+    background-color: #f0f0f0;
+}
+
+.vehicle-brand {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #dc143c;
+    margin-bottom: 4px;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+.vehicle-name {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #333;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+.btn-group {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.btn {
+    flex: 1;
+    padding: 8px 0;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.btn-favorite {
+    background-color: #dc143c;
+    color: white;
+}
+
+.btn-favorite:hover {
+    background-color: #b91c3c;
+}
+
+.btn-detail {
+    background-color: white;
+    color: #dc143c;
+    border: 2px solid #dc143c;
+}
+
+.btn-detail:hover {
+    background-color: #dc143c;
+    color: white;
+}
+
+@media (max-width: 900px) {
+    #vehicle-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 600px) {
+    #vehicle-list {
+        grid-template-columns: 1fr;
+    }
+}
