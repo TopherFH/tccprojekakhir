@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Detail Mobil - ThomasCar</title>
+    <link rel="stylesheet" href="styleuser.css" />
+    <style>
+        .detail-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+            padding: 32px 24px;
+        }
+        .detail-image {
+            width: 100%;
+            max-height: 260px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background: #f0f0f0;
+        }
+        .detail-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #dc143c;
+        }
+        .detail-label {
+            font-weight: 600;
+            color: #555;
+            margin-top: 12px;
+        }
+        .detail-value {
+            margin-bottom: 8px;
+            color: #222;
+        }
+        .back-btn {
+            margin-top: 24px;
+            padding: 10px 22px;
+            border: none;
+            border-radius: 8px;
+            background: #dc143c;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .back-btn:hover {
+            background: #b0102c;
+        }
+    </style>
+</head>
+<body>
+    <div class="detail-container" id="detailContainer">
+        <p>Memuat detail mobil...</p>
+    </div>
+    <script>
+        // Ambil parameter id dari URL
+        function getIdFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id');
+        }
+
+        async function fetchVehicleDetail(id) {
+            try {
+                const accessToken = localStorage.getItem("accessToken");
+                const res = await fetch(`http://localhost:5000/api/vehicles/${id}`, {
+                    headers: { Authorization: `Bearer ${accessToken}` }
+                });
+                if (!res.ok) throw new Error("Gagal memuat detail kendaraan");
+                return await res.json();
+            } catch (err) {
+                return null;
+            }
+        }
+
+        function renderDetail(vehicle) {
+            if (!vehicle) {
+                document.getElementById("detailContainer").innerHTML = "<p style='color:red;'>Data kendaraan tidak ditemukan.</p>";
+                return;
+            }
+            document.getElementById("detailContainer").innerHTML = `
+                <img class="detail-image" src="${vehicle.image_url || 'https://via.placeholder.com/600x260?text=No+Image'}" alt="${vehicle.name}" />
+                <div class="detail-title">${vehicle.name}</div>
+                <div class="detail-label">Brand:</div>
+                <div class="detail-value">${vehicle.brand || '-'}</div>
+                <div class="detail-label">Tahun:</div>
+                <div class="detail-value">${vehicle.year || '-'}</div>
+                <div class="detail-label">Kategori:</div>
+                <div class="detail-value">${vehicle.category || '-'}</div>
+                <div class="detail-label">Deskripsi:</div>
+                <div class="detail-value">${vehicle.description || '-'}</div>
+                <button class="back-btn" onclick="window.history.back()">Kembali</button>
+            `;
+        }
+
+        // Main
+        (async function() {
+            const id = getIdFromUrl();
+            if (!id) {
+                renderDetail(null);
+                return;
+            }
+            const vehicle = await fetchVehicleDetail(id);
+            renderDetail(vehicle);
+        })();
+    </script>
+</body>
+</html>
