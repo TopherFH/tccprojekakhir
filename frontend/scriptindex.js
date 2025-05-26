@@ -1,4 +1,4 @@
-const apiBaseUrl = "http://localhost:5000/api";
+const apiBaseUrl = "34.45.222.161";
 const accessToken = localStorage.getItem("accessToken");
 const messageEl = document.getElementById("message");
 const vehiclesTableBody = document.querySelector("#vehiclesTable tbody");
