@@ -1,4 +1,4 @@
-const apiBaseUrl = "http://localhost:5000/api";
+const apiBaseUrl = "34.45.222.161";
 
 function showMessage(msg, color = "red") {
     const message = document.getElementById("message");
